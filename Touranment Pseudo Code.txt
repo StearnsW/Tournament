@@ -19,6 +19,7 @@ Sign Up
  *if not suggest nearby slots
  *if yes show sign-up details
 *add user name to corresponding slot in SHEET
+*return to Main Menu
 
 Cancel Sign Up
 *prompt user sign-up name
@@ -27,16 +28,19 @@ Cancel Sign Up
 *check if user sign-up name matches name in slot
  *if not show text outlining cancellation error
  *if yes show cancellation confirmation
+*return to Main Menu
 
 View Participants(locally)
 *prompt for spot around which to look
  *check if valid slot
 *show that slot and 5* slots above and below (if 5 would run off edge of list just return as many are remain to edge)
+*return to Main Menu
 
 Save Changes
 *prompt y/n to save changes
  *check if correct input
 *if yes edit the tournament file data with the new changes(this will be take some legwork)
+*return to Main Menu
 
 Exit
 *ALERT user to consequences of not saving
