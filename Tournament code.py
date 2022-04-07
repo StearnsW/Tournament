@@ -77,16 +77,50 @@ def Sign_Up():
     print("====================")
     spot_picked = False
     while not spot_picked:
-        spot=int(input(f"Desired starting slot #[1-{len(participant_spots)}]: "))
-        if spot not in range(1,len(participant_spots)+1):
-            print("That is not a valid spot, please try again")
-        elif participant_spots[spot]!=None:
-            print("That spot is already taken, please try again")
+        while not sign_up_spot.isnumeric(): # ensure number of participants is a number
+            sign_up_spot=input(f"Desired starting slot #[1-{len(participant_spots)}]: "))
+            if not sign_up_spot.isnumeric():
+                print("That was not recognized as a number, please try again")
+
+        if int(sign_up_spot) not in range(1,len(participant_spots)+1):
+            print("That is not a valid slot, please try again")
+        elif participant_spots[sign_up_spot]!=None:
+            print("That slot is already taken, please try again")
         else:
             spot_picked = True
-    name=input("Participant Name: ")
-    print(f"Success:\n {name} is sighed up in starting slot # {spot}")
-    participant_spots[spot]=name
+    sign_up_name=input("Participant Name: ")
+    print(f"Success:\n {sign_up_name} is sighed up in starting slot # {sign_up_spot}")
+    participant_spots[int(sign_up_spot)]=sign_up_name
+
+#function to delete name from participant_slot
+def Cancel_Sign_Up():
+    print("Participant Cancellation")
+    print("========================")
+    made_cancellation = False
+    while not made_cancellation: # cancellation loop, gives the option to quit without canceling
+        while not cancel_spot.isnumeric():
+            cancel_spot=input(f"Starting slot #[1-{len(participant_spots)}]: ")
+            if not cancel_spot.isnumeric():
+                print("That was not recognized as a number, please try again")
+        
+        if int(cancel_spot) not in range(1,len(participant_spots)+1):
+            print("That is not a valid slot, please try again")
+        
+        cancel_name=input("Participant Name: ")
+        
+        if participant_spots[int(cancel_spot)]!=cancel_name:
+            print(f"Error:\n{cancel_name} is not in that starting slot")
+            continue_cancellation=input("Would you still like to cancel [only 'n' to leave]: ")
+            
+            if continue_cancellation!='n':
+                print("You have chosen to continue the cancellation process")
+            else:
+                made_cancellation = True
+        else:
+            print(f"Success:\n{cancel_name} has been cancelled from starting slot #{cancel_spot}")
+            made_cancellation = True
+
+
 
 
 
