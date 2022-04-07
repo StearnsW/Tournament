@@ -33,9 +33,9 @@ while name_conflict:
 
 
 if edit_existing_tournament: # if pre-existing file take participant_spots from file
-    file=open(f'{tournament_name}.csv','w') # open the file to edit
+    file=open(f'{tournament_name}.csv','r') # open the file to edit
     reader = csv.reader(file)
-    participant_spots={rows[0]:rows[1] for rows in reader}
+    participant_spots={int(rows[0]):rows[1] for rows in reader} # build participant_spots from csv
     num_participants=len(participant_spots)
     file.close() # close file done when done editing.
 else:
@@ -49,7 +49,51 @@ else:
     for i in range(int(num_participants)):
         participant_spots[i+1]=None
 
-print(f'\nThere are {num_participants} participant slots ready for sign-ups.')
+print(f'\nThere are {num_participants} participant slots ready for sign-ups.') # print number of spaces in tourney
+
+#the main menu, returns value of where it wants to go (can be made to call methods internally later)
+def Main_Menu():
+    print("Participant Menu")
+    print("================")
+    # options
+    print("1. Sign Up")
+    print("2. Cancel Sign Up")
+    print("3. View Participants")
+    print("4. Save Changes")
+    print("5. Exit")
+    #loop to make sure they choose a valid option
+    choice_made = False
+    while not choice_made:
+        choice=input("What would you like to do, please enter the corresponging number: ")
+        if choice not in {'1','2','3','4','5'}:
+            print("Not a recognized choice, please try agian")
+        else:
+            choice_made = True
+    return choice
+
+#function to add name to participant_slots
+def Sign_Up():
+    print("Participant Sign Up")
+    print("====================")
+    spot_picked = False
+    while not spot_picked:
+        spot=int(input(f"Desired starting slot #[1-{len(participant_spots)}]: "))
+        if spot not in range(1,len(participant_spots)+1):
+            print("That is not a valid spot, please try again")
+        elif participant_spots[spot]!=None:
+            print("That spot is already taken, please try again")
+        else:
+            spot_picked = True
+    name=input("Participant Name: ")
+    print(f"Success:\n {name} is sighed up in starting slot # {spot}")
+    participant_spots[spot]=name
 
 
+
+
+file=open(f'{tournament_name}.csv','w') # open the file to edit
+for key in participant_spots.keys():
+    file.write("%i,%s\n"%(key,participant_spots[key])) # write participant_spots to csv
+
+file.close()
 
