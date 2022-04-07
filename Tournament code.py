@@ -15,6 +15,7 @@ participant_spots={}
 number_participants=welcome_page()
 for i in range(int(number_participants)):
     participant_spots[i+1]=None
-print(participant_spots)
 
-#my_file=open('Tournament.csv','w')
+tournament_name=input("What is your tournament name?  ")
+file=open(f'{tournament_name}.csv','w')
+file.close()
