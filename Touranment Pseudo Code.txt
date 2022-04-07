@@ -1,0 +1,51 @@
+TOURNAMENT TRACKER
+
+Welcome Text
+*prompt user input # of participants
+ *check to see if inputted int
+*build blank Array/list/dictionary with slots 1-user_input (referenced below as SHEET)
+*Ask for Tournament name for later file building
+
+Main Menu
+*choices (1:sign up, 2:cancel sign up, 3:view participants(locally), 4:save changes, 5:exit)
+*prompt user input choice number
+ *check if input is in {1,2,3,4,5}, if not reprompt
+
+Sign Up
+*prompt user sign-up name
+*prompt user sign-up slot #
+ *check valid slot #
+*check if user slot # is available
+ *if not suggest nearby slots
+ *if yes show sign-up details
+*add user name to corresponding slot in SHEET
+
+Cancel Sign Up
+*prompt user sign-up name
+*prompt user sign-up slot
+ *check if valid slot
+*check if user sign-up name matches name in slot
+ *if not show text outlining cancellation error
+ *if yes show cancellation confirmation
+
+View Participants(locally)
+*prompt for spot around which to look
+ *check if valid slot
+*show that slot and 5* slots above and below (if 5 would run off edge of list just return as many are remain to edge)
+
+Save Changes
+*prompt y/n to save changes
+ *check if correct input
+*if yes edit the tournament file data with the new changes(this will be take some legwork)
+
+Exit
+*ALERT user to consequences of not saving
+*prompt if still want to exit [y/n]
+ *check if valid input
+*if yes, close the program
+
+
+
+
+
+
