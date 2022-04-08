@@ -37,10 +37,10 @@ if edit_existing_tournament: # if pre-existing file take participant_spots from 
     file=open(f'{tournament_name}.csv','r') # open the file to edit
     reader = csv.reader(file)
     participant_spots={int(rows[0]):rows[1] for rows in reader} # build participant_spots from csv
-    for i in range(1,len(participant_spots)+1):
-        if participant_spots[i]=='None':
-            participant_spots[i] = None
     num_participants=len(participant_spots)
+    for i in range(num_participants): # loop to make sure imported None values are correctly cast
+        if participant_spots[i+1]=='None':
+            participant_spots[i+1] = None
     file.close() # close file done when done editing.
 else:
     while not num_participants.isnumeric(): # ensure number of participants is a number
@@ -50,7 +50,8 @@ else:
 
         # constructing the blank sign-up sheet (participant_spots)
     participant_spots={}
-    for i in range(int(num_participants)):
+    num_participants=int(num_participants)
+    for i in range(num_participants):
         participant_spots[i+1]=None
 
 
@@ -94,23 +95,30 @@ def Sign_Up():
     print("====================")
     spot_picked = False
     sign_up_spot='a'
-    while not spot_picked:
-        while not sign_up_spot.isnumeric(): # ensure number of participants is a number
-            sign_up_spot=input(f"Desired starting slot #[1-{len(participant_spots)}]: ")
-            if not sign_up_spot.isnumeric():
-                print("That was not recognized as a number, please try again")
+    no_open_spots=True
+    for i in range(1,num_participants+1):
+        if participant_spots[i]==None:
+            no_open_spots=False
+    if no_open_spots:
+        print("There are no open slots in this tournament, sorry.")
+    else:    
+        while not spot_picked:
+            while not sign_up_spot.isnumeric(): # ensure number of participants is a number
+                sign_up_spot=input(f"Desired starting slot #[1-{num_participants}]: ")
+                if not sign_up_spot.isnumeric():
+                    print("That was not recognized as a number, please try again")
 
-        if int(sign_up_spot) not in range(1,len(participant_spots)+1):
-            print("That is not a valid slot, please try again")
-            sign_up_spot='a'
-        elif participant_spots[int(sign_up_spot)]!=None:
-            print("That slot is already taken, please try again")
-            sign_up_spot='a'
-        else:
-            spot_picked = True
-    sign_up_name=input("Participant Name: ")
-    print(f"Success:\n {sign_up_name} is signed up in starting slot # {sign_up_spot}")
-    participant_spots[int(sign_up_spot)]=sign_up_name
+            if int(sign_up_spot) not in range(1,num_participants+1):
+                print("That is not a valid slot, please try again")
+                sign_up_spot='a'
+            elif participant_spots[int(sign_up_spot)]!=None:
+                print("That slot is already taken, please try again")
+                sign_up_spot='a'
+            else:
+                spot_picked = True
+        sign_up_name=input("Participant Name: ")
+        print(f"Success:\n {sign_up_name} is signed up in starting slot # {sign_up_spot}")
+        participant_spots[int(sign_up_spot)]=sign_up_name
 
 #function to delete name from participant_slot
 def Cancel_Sign_Up():
@@ -120,11 +128,11 @@ def Cancel_Sign_Up():
     cancel_spot='a'
     while not made_cancellation: # cancellation loop, gives the option to quit without canceling
         while not cancel_spot.isnumeric():
-            cancel_spot=input(f"Starting slot #[1-{len(participant_spots)}]: ")
+            cancel_spot=input(f"Starting slot #[1-{num_participants}]: ")
             if not cancel_spot.isnumeric():
                 print("That was not recognized as a number, please try again")
         
-        if int(cancel_spot) not in range(1,len(participant_spots)+1):
+        if int(cancel_spot) not in range(1,num_participants+1):
             print("That is not a valid slot, please try again")
             cancel_spot='a'
         
@@ -152,11 +160,11 @@ def View_Participants():
     location='a'
     while not location_picked:
         while not location.isnumeric(): # ensure number of participants is a number
-            location=input(f"Starting slot #[1-{len(participant_spots)}]: ")
+            location=input(f"Starting slot #[1-{num_participants}]: ")
             if not location.isnumeric():
                 print("That was not recognized as a number, please try again")
                 location='a'
-        if int(location) not in range(1,len(participant_spots)+1):
+        if int(location) not in range(1,num_participants+1):
             print("That is not a valid slot, please try again")
             location='a'
         else:
@@ -167,7 +175,7 @@ def View_Participants():
     for i in range(1,6):
         nearby_locations.add(location+i)
         nearby_locations.add(location-i)
-    for i in range(1,len(participant_spots)+1):
+    for i in range(1,num_participants+1):
         slot_locations.add(i)
     output_locations=nearby_locations.intersection(slot_locations)
     
