@@ -17,7 +17,7 @@ while name_conflict:
         edit_file_checked = False # boolean for conflict solving
 
         while not edit_file_checked: # conflict resolution loop
-            tournament_updates=input('A tournament of that name exists, are these edits to the existing tournament [y/n]: ')
+            tournament_updates=input('A tournament of that name exists, are these edits to the existing tournament? [y/n]\n')
             if tournament_updates!='y' and tournament_updates!='n': # invalid reply
                 print("That wasn't one of the options, please resond only 'y' or 'n'")
             elif tournament_updates == 'n': # not to edit existing, leave edit conflict loop
@@ -69,7 +69,11 @@ def Main_Menu():
             print("Not a recognized choice, please try agian")
         else:
             choice_made = True
-    return choice
+
+    if int(choice)==1:
+        Sign_Up()
+    elif int(choice)==2:
+        Cancel_Sign_Up()
 
 #function to add name to participant_slots
 def Sign_Up():
@@ -121,13 +125,58 @@ def Cancel_Sign_Up():
             made_cancellation = True
 
 
+def View_Participants():
+    print("View Participants")
+    print("=================")
+    location_picked = False
+    while not location_picked:
+        while not location.isnumeric(): # ensure number of participants is a number
+            location=input(f"Starting slot #[1-{len(participant_spots)}]: ")
+            if not location.isnumeric():
+                print("That was not recognized as a number, please try again")
+        if int(location) not in range(1,len(participant_spots)+1):
+            print("That is not a valid slot, please try again")
+        else:
+            location_picked = True
+    
+    nearby_locations={location}
+    slot_locations=set()
+    for i in range(1,6):
+        nearby_locations.add(location+i)
+        nearby_locations.add(location-i)
+    for i in range(1,len(participant_spots)+1):
+        slot_locations.add(i)
+    output_locations=nearby_locations.intersection(slot_locations)
+    
+    print("Starting Slot: Participant")
+    
+    for i in output_locations:
+        print(f'{i}: {participant_spots[i]}')
+        
+
+def Save_Changes():
+    print("Save Changes")
+    print("============")
+    run_save = False
+    while not run_save:
+        save_changes=print("Save your changes to CVS? [y/n]\n")
+        if save_changes!='y' and save_changes!='n': # invalid reply
+            print("That wasn't one of the options, please resond only 'y' or 'n'")
+        elif save_changes == 'n': # not to edit existing, leave edit conflict loop
+            print("Your changes will not be saved")
+            run_save = True
+        else: # want to edit existing, leave edit conflict loop and same name loop, change edit boolean
+            print("Your changes will be saved")
+            run_save = True
+            file=open(f'{tournament_name}.csv','w') # open the file to edit
+            for key in participant_spots.keys():
+                file.write("%i,%s\n"%(key,participant_spots[key])) # write participant_spots to csv
+
+            file.close()
 
 
-
-
-file=open(f'{tournament_name}.csv','w') # open the file to edit
-for key in participant_spots.keys():
-    file.write("%i,%s\n"%(key,participant_spots[key])) # write participant_spots to csv
-
-file.close()
+def Exit():
+    print("Exit")
+    print("=====")
+    print("")
 
