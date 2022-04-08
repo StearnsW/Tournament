@@ -176,7 +176,21 @@ def Save_Changes():
 
 
 def Exit():
+    want_to_exit = False
     print("Exit")
     print("=====")
-    print("")
+    print("Any unsaved changes will be lost.")
+    is_exiting = False
+    while not is_exiting:
+        exiting=print("Would you like to exit? [y/n]\n")
+        if exiting!='y' and exiting!='n': # invalid reply
+            print("That wasn't one of the options, please resond only 'y' or 'n'")
+        elif exiting == 'n': # don't exit program, exit loop
+            print("You will be returned to the Main Menu")
+            is_exiting = True
+        else: # exit loop, change want to exit to Main Menu
+            print("Goodbye!")
+            is_exiting = True
+            want_to_exit = True
+    return want_to_exit
 
